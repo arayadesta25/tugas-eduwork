@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daftar Produk - Bootstrap</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    nav {
+      background-color: #213633;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 24px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+    footer {
+      background-color: #213633;
+      color: white;
+      padding: 5px;
+      font-size: 24px;
+      bottom: 0;
+      width: 100%;
+    }
+    
+      
+    
+  </style>
+</head>
+<body>
+  <nav>
+    ARRAYA MART
+  </nav>
+
+<div class="container py-4">
+  <h1 class="mb-4 text-center">Daftar Produk</h1>
+
+  <!-- Filter Controls -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <input type="text" id="searchInput" class="form-control" placeholder="Cari produk..." oninput="renderProducts()">
+    </div>
+    <div class="col-md-6">
+      <select id="sortSelect" class="form-select" onchange="renderProducts()">
+        <option value="">Urutkan berdasarkan harga</option>
+        <option value="asc">Harga Termurah</option>
+        <option value="desc">Harga Termahal</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Product List -->
+  <div class="row" id="productList"></div>
+</div>
+  <footer class="text-center py-4">
+    <p>&copy; 2023 ARRAYA MART. All rights reserved.</p>
+  </footer>
+
+  <!-- Bootstrap JS -->
+
+<script>
+  const products = [
+    { name: "Laptop Asus", description: "Laptop gaming terbaru", price: 15000000, image: "https://plus.unsplash.com/premium_photo-1681702156223-ea59bfbf1065?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bGFwdG9wfGVufDB8fDB8fHww" },
+    { name: "iPhone 14", description: "Smartphone flagship Apple", price: 20000000, image: "https://images.unsplash.com/photo-1598965402089-897ce52e8355?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c21hcnRwaG9uZXxlbnwwfHwwfHx8MA%3D%3D" },
+    { name: "Samsung Galaxy S23", description: "Smartphone Android canggih", price: 18000000, image: "https://plus.unsplash.com/premium_photo-1680534423388-47721b5ebf5c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Smartwatch Xiaomi", description: "Jam tangan pintar", price: 1500000, image: "https://images.unsplash.com/photo-1598327106026-d9521da673d1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Headset Logitech", description: "Headset gaming premium", price: 1200000, image: "https://images.unsplash.com/photo-1478198697312-304b0bd9475f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Kamera Canon", description: "Kamera DSLR profesional", price: 9500000, image: "https://images.unsplash.com/photo-1726065235173-46a7690366b4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxzZWFyY2h8NTB8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Printer Epson", description: "Printer tinta warna", price: 2500000, image: "https://images.unsplash.com/photo-1603145733146-ae562a55031e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "TV LG 50\"", description: "Smart TV 4K", price: 8500000, image: "https://images.unsplash.com/photo-1603145733146-ae562a55031e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Tablet Samsung", description: "Tablet Android", price: 6000000, image: "https://images.unsplash.com/photo-1603145733146-ae562a55031e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Speaker JBL", description: "Speaker Bluetooth", price: 750000, image: "https://images.unsplash.com/photo-1603145733146-ae562a55031e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Monitor Dell", description: "Monitor 27 inci", price: 3000000, image: "https://images.unsplash.com/photo-1603145733146-ae562a55031e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" },
+    { name: "Mouse Razer", description: "Mouse gaming", price: 900000, image: "https://images.unsplash.com/photo-1603145733146-ae562a55031e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Njh8fHNtYXJ0cGhvbmV8ZW58MHx8MHx8fDA%3D" }
+  ];
+
+  function renderProducts() {
+    const listContainer = document.getElementById('productList');
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const sortValue = document.getElementById('sortSelect').value;
+
+    let filtered = products.filter(p => p.name.toLowerCase().includes(searchTerm));
+
+    if (sortValue === 'asc') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortValue === 'desc') {
+      filtered.sort((a, b) => b.price - a.price);
+    }
+
+    listContainer.innerHTML = '';
+
+    filtered.forEach(p => {
+      const card = `
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <img src="${p.image}" class="card-img-top" alt="${p.name}">
+            <div class="card-body">
+              <h5 class="card-title">${p.name}</h5>
+              <p class="card-text">${p.description}</p>
+              <p class="card-text fw-bold text-primary">Rp ${p.price.toLocaleString('id-ID')}</p>
+            </div>
+          </div>
+        </div>
+      `;
+      listContainer.innerHTML += card;
+    });
+  }
+
+  renderProducts();
+
+  let toko= `arraya mart`;
+  let produk= `berbelanja di sini`;
+
+  alert(` selamat datang di ${toko} dan selamat ${produk}`)
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
