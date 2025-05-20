@@ -125,3 +125,36 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+-- menambah data produk
+INSERT INTO products (name, price, description, stock)
+VALUES ('Kemeja Pria Lengan Panjang', 199000.00, 'Kemeja formal warna biru navy', 20);
+
+
+
+-- memampilkan data produk
+
+semua produk
+SELECT * FROM products;
+
+produk tertentu berdasarkan id
+SELECT * FROM products WHERE id = 1;
+
+produk dengan stok < 10 
+SELECT * FROM products WHERE stock < 10;
+
+
+
+-- mengubah data produk
+UPDATE products
+SET price = 189000.00, stock = 25
+WHERE id = 1;
+
+
+
+-- menghapus data produk dengan id =1
+
+DELETE FROM products
+WHERE id = 1;
